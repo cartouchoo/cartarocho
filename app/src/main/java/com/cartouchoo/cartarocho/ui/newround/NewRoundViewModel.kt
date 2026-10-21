@@ -10,6 +10,8 @@ import com.cartouchoo.cartarocho.data.model.RoundDraft
 import com.cartouchoo.cartarocho.data.repository.GameRepository
 import com.cartouchoo.cartarocho.data.repository.RoundRepository
 import com.cartouchoo.cartarocho.domain.Camp
+import com.cartouchoo.cartarocho.domain.CardCount
+import com.cartouchoo.cartarocho.domain.TrickPhotoParser
 import com.cartouchoo.cartarocho.domain.ChelemResult
 import com.cartouchoo.cartarocho.domain.Contract
 import com.cartouchoo.cartarocho.domain.MisereAnnouncement
@@ -23,6 +25,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+
+/** Étapes de la saisie des points par photo des plis. */
+sealed interface PhotoAnalysis {
+    data object Analyzing : PhotoAnalysis
+
+    /** Comptage pré-rempli depuis la photo, modifiable avant d'être appliqué. */
+    data class Review(val count: CardCount, val trumpsSeen: List<Int>) : PhotoAnalysis
+
+    data class Failed(val message: String) : PhotoAnalysis
+}
 
 data class NewRoundUiState(
     val players: List<Player> = emptyList(),
@@ -39,6 +51,7 @@ data class NewRoundUiState(
     val poigneeCamp: Camp = Camp.ATTACK,
     val chelem: ChelemResult = ChelemResult.NONE,
     val miseres: List<MisereAnnouncement> = emptyList(),
+    val photoAnalysis: PhotoAnalysis? = null,
 ) {
     val playerCount: Int get() = players.size
     val points: Double? get() = pointsText.trim().replace(',', '.').toDoubleOrNull()
@@ -131,6 +144,34 @@ class NewRoundViewModel(
             state.copy(miseres = state.miseres + announcement)
         }
     }
+
+    fun onPhotoAnalyzing() = updateState { it.copy(photoAnalysis = PhotoAnalysis.Analyzing) }
+
+    fun onPhotoRead(words: List<String>) {
+        val detection = TrickPhotoParser.parse(words)
+        updateState {
+            it.copy(photoAnalysis = PhotoAnalysis.Review(detection.toCardCount(), detection.trumps.sorted()))
+        }
+    }
+
+    fun onPhotoFailed(message: String) = updateState { it.copy(photoAnalysis = PhotoAnalysis.Failed(message)) }
+
+    fun updateCardCount(count: CardCount) = updateState { state ->
+        val review = state.photoAnalysis as? PhotoAnalysis.Review ?: return@updateState state
+        state.copy(photoAnalysis = review.copy(count = count))
+    }
+
+    /** Reporte les points et les bouts comptés dans la donne. */
+    fun applyCardCount() = updateState { state ->
+        val review = state.photoAnalysis as? PhotoAnalysis.Review ?: return@updateState state
+        state.copy(
+            bouts = review.count.bouts,
+            pointsText = formatPointsText(review.count.points),
+            photoAnalysis = null,
+        )
+    }
+
+    fun dismissPhotoAnalysis() = updateState { it.copy(photoAnalysis = null) }
 
     fun validate(onDone: () -> Unit) {
         val state = _uiState.value

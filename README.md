@@ -7,6 +7,7 @@ Application Android pour compter les points au tarot, sans papier ni calculatric
 - **Joueurs** : crée ta liste de joueurs une fois, réutilise-la à chaque partie.
 - **Parties à 3, 4 ou 5 joueurs** : choisis les joueurs, donne un nom à la partie si tu veux.
 - **Saisie des donnes** : preneur, appelé (à 5), contrat, nombre de bouts, points réalisés (demi-points acceptés), petit au bout, poignée, chelem et misères. Le score de chacun est calculé automatiquement.
+- **Points par photo des plis** : prends en photo les cartes du preneur, étalées avec les coins visibles. L'app lit les numéros d'atouts et les lettres des têtes (R, D, C, V), puis affiche un écran de vérification avant de remplir les points et les bouts. La lecture se fait sur le téléphone, sans connexion. L'Excuse et les cartes basses n'ont pas d'index lisible : on les complète à la main.
 - **Tableau de la partie** : scores cumulés, historique des donnes, modification ou suppression d'une donne.
 - **Statistiques** par joueur : parties jouées, victoires, prises et taux de réussite, chelems, poignées et misères.
 - **Règles** du tarot consultables dans l'app.
@@ -54,9 +55,6 @@ Sous Windows, remplace `./gradlew` par `gradlew.bat`.
 
 - Kotlin, Jetpack Compose et Material 3
 - Room pour la base de données locale
+- ML Kit (reconnaissance de texte sur l'appareil) pour la lecture des cartes
 - Navigation Compose, architecture ViewModel + repository
-- Le moteur de calcul est isolé dans `domain/TarotScoreCalculator.kt` et couvert par des tests unitaires.
-
-## À venir
-
-- Saisie des points en prenant les plis en photo.
+- Le moteur de calcul est isolé dans `domain/TarotScoreCalculator.kt` et couvert par des tests unitaires, comme le comptage des cartes (`domain/CardCount.kt`, `domain/TrickPhotoParser.kt`).

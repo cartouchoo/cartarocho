@@ -1,5 +1,8 @@
 package com.cartouchoo.cartarocho.ui.newround
 
+import android.content.ActivityNotFoundException
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -47,9 +50,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
@@ -113,6 +120,43 @@ fun NewRoundScreen(
     ),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val photoUri = remember { trickPhotoUri(context) }
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { saved ->
+        if (!saved) return@rememberLauncherForActivityResult
+        viewModel.onPhotoAnalyzing()
+        scope.launch {
+            try {
+                viewModel.onPhotoRead(readWordsFromPhoto(context, photoUri))
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                viewModel.onPhotoFailed("La photo n'a pas pu être analysée. Réessaie avec plus de lumière.")
+            }
+        }
+    }
+    val takeTrickPhoto: () -> Unit = {
+        try {
+            cameraLauncher.launch(photoUri)
+        } catch (e: ActivityNotFoundException) {
+            viewModel.onPhotoFailed("Aucune application d'appareil photo n'a été trouvée sur ce téléphone.")
+        }
+    }
+
+    uiState.photoAnalysis?.let { analysis ->
+        PhotoAnalysisDialog(
+            analysis = analysis,
+            onCountChange = viewModel::updateCardCount,
+            onApply = viewModel::applyCardCount,
+            onRetake = {
+                viewModel.dismissPhotoAnalysis()
+                takeTrickPhoto()
+            },
+            onDismiss = viewModel::dismissPhotoAnalysis,
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -227,13 +271,12 @@ fun NewRoundScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedButton(
-                    onClick = {},
-                    enabled = false,
+                    onClick = takeTrickPhoto,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Icon(Icons.Filled.CameraAlt, contentDescription = "Prendre une photo des plis")
+                    Icon(Icons.Filled.CameraAlt, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Bientôt disponible")
+                    Text("Compter les points avec une photo des plis")
                 }
             }
 

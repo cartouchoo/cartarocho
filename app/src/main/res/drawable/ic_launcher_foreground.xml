@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The Excuse: a jester wearing big, bold Theo-style glasses. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Hat points -->
+    <path
+        android:fillColor="#D7263D"
+        android:pathData="M38,44C35,40 32,36 30,32C37,31 44,35 50,42Z" />
+    <path
+        android:fillColor="#D7263D"
+        android:pathData="M70,44C73,40 76,36 78,32C71,31 64,35 58,42Z" />
+    <path
+        android:fillColor="#2E5EAA"
+        android:pathData="M45,43C47,34 51,27 54,23C57,27 61,34 63,43Z" />
+    <!-- Face -->
+    <path
+        android:fillColor="#F1C27D"
+        android:pathData="M54,58m-14,0a14,15 0,1 1,28 0a14,15 0,1 1,-28 0" />
+    <!-- Black fringe -->
+    <path
+        android:fillColor="#1B1B1B"
+        android:pathData="M40.5,51C41.5,46 66.5,46 67.5,51L67.5,54C64,52 60.5,53 58,51C55,53.5 49,52.5 45.5,54C43,54.5 40.5,53.5 40.5,51Z" />
+    <!-- Hat band -->
+    <path
+        android:fillColor="#F2B705"
+        android:pathData="M39,42H69A2.5,2.5 0,0 1,71.5 44.5V46.5A2.5,2.5 0,0 1,69 49H39A2.5,2.5 0,0 1,36.5 46.5V44.5A2.5,2.5 0,0 1,39 42Z" />
+    <!-- Bells -->
+    <path
+        android:fillColor="#F2B705"
+        android:pathData="M30,32m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0 M78,32m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0 M54,22.5m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0" />
+    <!-- Glasses: tinted lenses -->
+    <path
+        android:fillColor="#B3D9EEF5"
+        android:pathData="M43.5,54H49.5A2.5,2.5 0,0 1,52 56.5V60.5A2.5,2.5 0,0 1,49.5 63H43.5A2.5,2.5 0,0 1,41 60.5V56.5A2.5,2.5 0,0 1,43.5 54Z M58.5,54H64.5A2.5,2.5 0,0 1,67 56.5V60.5A2.5,2.5 0,0 1,64.5 63H58.5A2.5,2.5 0,0 1,56 60.5V56.5A2.5,2.5 0,0 1,58.5 54Z" />
+    <!-- Eyes -->
+    <path
+        android:fillColor="#1B1B1B"
+        android:pathData="M46.5,58.8m-1.4,0a1.4,1.4 0,1 1,2.8 0a1.4,1.4 0,1 1,-2.8 0 M61.5,58.8m-1.4,0a1.4,1.4 0,1 1,2.8 0a1.4,1.4 0,1 1,-2.8 0" />
+    <!-- Glasses: thick bold frames + bridge -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#1B1B1B"
+        android:strokeWidth="2.2"
+        android:strokeLineJoin="round"
+        android:pathData="M43.5,54H49.5A2.5,2.5 0,0 1,52 56.5V60.5A2.5,2.5 0,0 1,49.5 63H43.5A2.5,2.5 0,0 1,41 60.5V56.5A2.5,2.5 0,0 1,43.5 54Z M58.5,54H64.5A2.5,2.5 0,0 1,67 56.5V60.5A2.5,2.5 0,0 1,64.5 63H58.5A2.5,2.5 0,0 1,56 60.5V56.5A2.5,2.5 0,0 1,58.5 54Z M52,57Q54,55.3 56,57" />
+    <!-- Coloured brow accent, a nod to Theo's playful frames -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#E5007E"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:pathData="M42.5,53.4H50.5 M57.5,53.4H65.5" />
+    <!-- Cheeks and smile -->
+    <path
+        android:fillColor="#59E5007E"
+        android:pathData="M44,66m-2,0a2,1.4 0,1 1,4 0a2,1.4 0,1 1,-4 0 M64,66m-2,0a2,1.4 0,1 1,4 0a2,1.4 0,1 1,-4 0" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#1B1B1B"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:pathData="M49.5,67Q54,71 58.5,67" />
+    <!-- Ruff collar -->
+    <path
+        android:fillColor="#F2B705"
+        android:pathData="M36,72L42,84L48,75L54,86L60,75L66,84L72,72Z" />
+    <path
+        android:fillColor="#2E5EAA"
+        android:pathData="M42,84L45,76L48,75Z M54,86L57,76L60,75Z M66,84L69,74L72,72Z" />
+</vector>

@@ -93,13 +93,20 @@ fun NewGameScreen(
 
             if (uiState.players.isEmpty()) {
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text("Aucun joueur. Ajoutez des joueurs avant de créer une partie.")
                 }
             } else {
-                LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                // weight(1f) makes the list scroll instead of pushing "Valider" off-screen.
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                ) {
                     items(uiState.players, key = { it.id }) { player ->
                         PlayerSelectionRow(
                             player = player,
@@ -114,7 +121,9 @@ fun NewGameScreen(
             Button(
                 onClick = { viewModel.onValidate(onGameCreated) },
                 enabled = uiState.canValidate,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
             ) {
                 Text("Valider")
             }

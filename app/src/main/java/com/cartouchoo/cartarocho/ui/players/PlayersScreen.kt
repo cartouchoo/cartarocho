@@ -1,8 +1,10 @@
 package com.cartouchoo.cartarocho.ui.players
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -68,7 +70,11 @@ fun PlayersScreen(
                 Text("Aucun joueur pour l'instant")
             }
         } else {
-            LazyColumn(modifier = Modifier.padding(innerPadding)) {
+            LazyColumn(
+                modifier = Modifier.padding(innerPadding),
+                // Leave room so the last player isn't hidden behind the button.
+                contentPadding = PaddingValues(bottom = 88.dp),
+            ) {
                 items(players, key = { it.id }) { player ->
                     PlayerRow(player = player, onEdit = { viewModel.openEditDialog(player) })
                     HorizontalDivider()
